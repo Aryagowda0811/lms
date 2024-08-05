@@ -49,7 +49,7 @@ pipeline {
            steps {
                    echo 'Cleaning Work Space'
                    // Install Cleanup Workspace plugin to make below command work
-                   cleanWs()
+                   //cleanWs()
            }
        }
    }
