@@ -7,7 +7,7 @@ pipeline {
            steps {
                echo 'sleep 10'
                echo 'Sonar Analysis is Started'
-               sh 'cd webapp && sudo docker run --rm -e SONAR_HOST_URL="http://3.14.250.30:9000" -v ".:/usr/src" -e SONAR_TOKEN="sqp_a34ba9048095b33bbf16b7293713c6a020fed71f" sonarsource/sonar-scanner-cli -Dsonar.projectKey=lms-2'
+               sh 'cd webapp && sudo docker run --rm -e SONAR_HOST_URL="http://18.117.104.85:9000" -v ".:/usr/src" -e SONAR_TOKEN="sqp_a34ba9048095b33bbf16b7293713c6a020fed71f" sonarsource/sonar-scanner-cli -Dsonar.projectKey=lms-2'
                echo 'Sonar Analysis is Completed'
            }
        }
@@ -15,23 +15,25 @@ pipeline {
        stage('Building the project using DOCKER') {
            steps {
                echo 'LMS Build Started'
-               sh 'cd webapp && docker build -t manjunathgowda0811/lmsimage:first'
-               sh 'docker push manjunathgowda0811/lmsimage:first'
+               def DockerImage = docker.build registry
+               def registry = manjunathgowda0811/dockerimage
+               //sh 'cd webapp && docker build -t manjunathgowda0811/lmsimage:first'
+               //sh 'docker push manjunathgowda0811/lmsimage:first'
                echo 'lms build completed'
            }
        }
       
-       //stage('Publish LMS') {
-           //steps {
-               //script {
-                   //def packageJson = readJSON file: 'webapp/package.json'
-                   //def packageJSONVersion = packageJson.version
-                   //echo "${packageJSONVersion}"
-                   //sh "zip webapp/lms-${packageJSONVersion}.zip -r webapp/dist"
-                   //sh "curl -v -u admin:ManjuAppu@0811 --upload-file webapp/lms-${packageJSONVersion}.zip http://3.139.69.109:8081/repository/lms-1/"
-               //}
-           //}
-       //}
+       stage('Publish image') {
+           steps {
+               script {
+                   def RegistryCredentials = dockerhub_id
+                   docker.withRegistry( '',RegistryCredentials ){
+                    DockerImage.push()
+                   }
+                   
+               }
+           }
+       }
       
        //stage('Deploy LMS') {
            //steps {
