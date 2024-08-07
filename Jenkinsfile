@@ -1,9 +1,9 @@
 pipeline {
    agent any
    environment{
-    DockerImage = ''
+    dockerImage = ''
     registry = 'manjunathgowda0811/dockerimage'
-    RegistryCredentials = 'dockerhub_id'
+    registryCredentials = 'dockerhub_id'
    }
 
 
@@ -20,7 +20,7 @@ pipeline {
        stage('Building the project using DOCKER') {
            steps {
                echo 'LMS Build Started'
-               DockerImage = docker.build registry
+               dockerImage = docker.build registry
                //sh 'cd webapp && docker build -t manjunathgowda0811/lmsimage:first'
                //sh 'docker push manjunathgowda0811/lmsimage:first'
                echo 'lms build completed'
@@ -30,8 +30,8 @@ pipeline {
        stage('Publish image') {
            steps {
             script{
-                   docker.withRegistry( '',RegistryCredentials ){
-                    DockerImage.push()
+                   docker.withRegistry( '',registryCredentials ){
+                    dockerImage.push()
                    } 
                 }
            }
