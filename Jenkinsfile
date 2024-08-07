@@ -2,8 +2,8 @@ pipeline {
    agent any
    environment{
     DockerImage = ''
-    registry = manjunathgowda0811/dockerimage
-    RegistryCredentials = dockerhub_id
+    registry = 'manjunathgowda0811/dockerimage'
+    RegistryCredentials = 'dockerhub_id'
    }
 
 
