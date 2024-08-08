@@ -1,26 +1,20 @@
 pipeline {
    agent any
-   environment{
-    dockerImage = ''
-    registry = 'manjunathgowda0811/dockerimage'
-    registryCredentials = 'dockerhub_id'
-   }
+   
 
 
    stages {
-       stage('Code Quality') {
+       stage('build the docker file') {
            steps {
-               echo 'sleep 10'
-               echo 'Sonar Analysis is Started'
-               sh 'cd webapp && sudo docker run --rm -e SONAR_HOST_URL="http://18.117.104.85:9000" -v ".:/usr/src" -e SONAR_TOKEN="sqp_a34ba9048095b33bbf16b7293713c6a020fed71f" sonarsource/sonar-scanner-cli -Dsonar.projectKey=lms-2'
-               echo 'Sonar Analysis is Completed'
+               sh 'cd webapp && docker build -t manjunathgowda0811/lmsimage:first'
+               
            }
        }
       
        stage('Building the project using DOCKER') {
            steps {
                echo 'LMS Build Started'
-               dockerImage = docker.build registry
+               //dockerImage = docker.build registry
                //sh 'cd webapp && docker build -t manjunathgowda0811/lmsimage:first'
                //sh 'docker push manjunathgowda0811/lmsimage:first'
                echo 'lms build completed'
