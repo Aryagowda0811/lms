@@ -6,7 +6,7 @@ pipeline {
    stages {
        stage('build the docker file') {
            steps {
-               sh 'cd webapp && docker build -t manjunathgowda0811/lmsimage:first'
+               sh 'cd webapp && docker build -t manjunathgowda0811/lmsimage:first .'
                
            }
        }
